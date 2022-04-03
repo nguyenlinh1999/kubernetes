@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #set Variable
-IP_VIP_K8S="10.30.1.130"
-IP_MASTER01="10.30.1.138"
-IP_MASTER02="10.30.1.138"
-IP_MASTER03="10.30.1.138"
+IP_VIP_K8S="10.15.13.117"
+IP_MASTER01="10.15.13.111"
+IP_MASTER02="10.15.13.112"
+IP_MASTER03="10.15.13.113"
 
 HOST_VIP="k8s-master-vip"
 HOST_MASTER01="k8s-master01"
@@ -108,11 +108,11 @@ vrrp_script check_apiserver {
 }
 
 vrrp_instance VI_1 {
-    state BACKUP
+    state MASTER
     preempt
     interface ens192
     virtual_router_id 151
-    priority 253
+    priority 255
     advert_int 1
     authentication {
         auth_type PASS
@@ -130,7 +130,7 @@ EOF
 #Script check api server keepalived
 cat <<EOF | sudo tee /etc/keepalived/check_apiserver.sh
 #!/bin/sh
-APISERVER_VIP=10.30.2.141
+APISERVER_VIP=10.15.13.117
 APISERVER_DEST_PORT=6443
 
 errorExit() {
